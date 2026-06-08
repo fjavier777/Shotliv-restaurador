@@ -7,40 +7,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --ink:       #16120d;
-  --paper:     #faf6ee;
-  --sepia:     #b8956a;
-  --sepia-lt:  #f0e6d2;
-  --sepia-dk:  #6b4f2e;
-  --accent:    #7a2d1e;
-  --muted:     #8a7d6e;
-  --white:     #fffdf8;
-  --success:   #2e5e3e;
-  --border:    #ddd0b8;
+  --ink:      #16120d;
+  --paper:    #faf6ee;
+  --sepia:    #b8956a;
+  --sepia-lt: #f0e6d2;
+  --sepia-dk: #6b4f2e;
+  --accent:   #7a2d1e;
+  --muted:    #8a7d6e;
+  --white:    #fffdf8;
+  --success:  #2e5e3e;
+  --border:   #ddd0b8;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'Inconsolata', monospace;
   background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
-  overflow-x: hidden;
 }
-
-/* ── Grain overlay ─────────────────────────── */
 body::before {
   content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  opacity: 0.025;
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px;
 }
 
-/* ── Header ────────────────────────────────── */
+/* ── Header ── */
 header {
   position: relative; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
@@ -48,638 +41,439 @@ header {
   border-bottom: 1px solid var(--border);
   background: var(--white);
 }
-
-.logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--ink);
-}
-
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; }
 .logo span { color: var(--accent); font-style: italic; }
-
 #userArea { display: flex; align-items: center; gap: 1rem; }
-
 .btn-google {
   display: flex; align-items: center; gap: 0.6rem;
-  padding: 0.55rem 1.1rem;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: white;
-  font-family: 'Inconsolata', monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  color: var(--ink);
-  cursor: pointer;
-  text-decoration: none;
+  padding: 0.55rem 1.1rem; border: 1px solid var(--border); border-radius: 3px;
+  background: white; font-family: 'Inconsolata', monospace; font-size: 0.78rem;
+  letter-spacing: 0.06em; color: var(--ink); cursor: pointer; text-decoration: none;
   transition: all 0.2s;
 }
-
 .btn-google:hover { border-color: var(--sepia); background: var(--sepia-lt); }
-
 .btn-google svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-.user-chip {
-  display: flex; align-items: center; gap: 0.6rem;
-  font-size: 0.78rem; color: var(--muted);
-}
-
-.user-chip img {
-  width: 28px; height: 28px; border-radius: 50%;
-  border: 1px solid var(--border);
-}
-
-.btn-logout {
+.user-chip { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; color: var(--muted); }
+.user-chip img { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); }
+.btn-text {
   font-size: 0.7rem; color: var(--muted); background: none; border: none;
   cursor: pointer; letter-spacing: 0.05em; padding: 0.2rem 0;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s;
+  border-bottom: 1px solid transparent; transition: all 0.2s; font-family: 'Inconsolata', monospace;
 }
-.btn-logout:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.btn-text:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.sep { color: var(--border); font-size: 0.8rem; }
 
-/* ── Hero ──────────────────────────────────── */
+/* ── Hero ── */
 .hero {
   position: relative; z-index: 1;
-  text-align: center;
-  padding: 5rem 2rem 3.5rem;
+  text-align: center; padding: 5rem 2rem 3.5rem;
   border-bottom: 1px solid var(--border);
 }
+.hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.35em; color: var(--sepia); text-transform: uppercase; margin-bottom: 1.25rem; }
+.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 300; line-height: 1.05; margin-bottom: 1.25rem; }
+.hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+.hero p { font-size: 0.82rem; color: var(--muted); max-width: 480px; margin: 0 auto; line-height: 1.7; }
 
-.hero-eyebrow {
-  font-size: 0.62rem;
-  letter-spacing: 0.35em;
-  color: var(--sepia);
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
-}
-
-.hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.8rem, 7vw, 5rem);
-  font-weight: 300;
-  line-height: 1.05;
-  color: var(--ink);
-  margin-bottom: 1.25rem;
-}
-
-.hero h1 em {
-  font-style: italic;
-  color: var(--accent);
-  font-weight: 400;
-}
-
-.hero p {
-  font-size: 0.82rem;
-  color: var(--muted);
-  max-width: 480px;
-  margin: 0 auto;
-  line-height: 1.7;
-  letter-spacing: 0.03em;
-}
-
-/* ── Login Gate ────────────────────────────── */
-#loginGate {
-  max-width: 440px;
-  margin: 4rem auto;
-  padding: 0 1.5rem;
-  text-align: center;
-}
-
-.gate-box {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 3rem 2.5rem;
-}
-
+/* ── Login Gate ── */
+#loginGate { max-width: 440px; margin: 4rem auto; padding: 0 1.5rem; text-align: center; display: none; }
+.gate-box { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 3rem 2.5rem; }
 .gate-icon { font-size: 3rem; margin-bottom: 1.25rem; }
-
-.gate-box h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  font-weight: 400;
-  margin-bottom: 0.6rem;
-}
-
-.gate-box p {
-  font-size: 0.78rem;
-  color: var(--muted);
-  line-height: 1.7;
-  margin-bottom: 2rem;
-}
-
+.gate-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; margin-bottom: 0.6rem; }
+.gate-box p { font-size: 0.78rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
 .btn-google-lg {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem;
-  width: 100%; padding: 0.9rem;
-  background: var(--ink);
-  color: var(--sepia-lt);
-  border: none; border-radius: 3px;
-  font-family: 'Inconsolata', monospace;
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.25s;
+  width: 100%; padding: 0.9rem; background: var(--ink); color: var(--sepia-lt);
+  border: none; border-radius: 3px; font-family: 'Inconsolata', monospace;
+  font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer; text-decoration: none; transition: all 0.25s;
 }
-
 .btn-google-lg:hover { background: var(--sepia-dk); }
-
 .btn-google-lg svg { width: 18px; height: 18px; }
 
-/* ── App ───────────────────────────────────── */
-#app {
-  display: none;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 5rem;
+/* ── API Key Gate ── */
+#apiKeyGate { max-width: 520px; margin: 4rem auto; padding: 0 1.5rem; display: none; }
+.apikey-box { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 2.5rem; }
+.apikey-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem; }
+.apikey-box p { font-size: 0.78rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+.apikey-steps {
+  background: var(--sepia-lt); border-radius: 3px; padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem; font-size: 0.75rem; line-height: 1.9; color: var(--sepia-dk);
 }
-
-/* ── Upload ────────────────────────────────── */
-.section-label {
-  font-size: 0.62rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--sepia-dk);
-  margin-bottom: 0.75rem;
+.apikey-steps a { color: var(--accent); }
+.input-row { display: flex; gap: 0.75rem; margin-bottom: 0.6rem; }
+.input-row input {
+  flex: 1; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 3px;
+  background: var(--sepia-lt); font-family: 'Inconsolata', monospace; font-size: 0.82rem;
+  color: var(--ink); outline: none; transition: border-color 0.2s;
 }
-
-.upload-zone {
-  position: relative;
-  border: 2px dashed var(--border);
-  border-radius: 4px;
-  padding: 3.5rem 2rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.25s;
-  background: rgba(240,230,210,0.15);
-  margin-bottom: 1.5rem;
+.input-row input:focus { border-color: var(--sepia); }
+.btn-save {
+  padding: 0.75rem 1.25rem; background: var(--ink); color: var(--sepia-lt);
+  border: none; border-radius: 3px; font-family: 'Inconsolata', monospace;
+  font-size: 0.75rem; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; white-space: nowrap;
 }
+.btn-save:hover { background: var(--sepia-dk); }
+.apikey-note { font-size: 0.68rem; color: var(--muted); line-height: 1.6; }
+.apikey-note a { color: var(--sepia-dk); }
+#apikeyError { display: none; font-size: 0.75rem; color: var(--accent); margin-top: 0.5rem; }
 
-.upload-zone:hover,
-.upload-zone.over { border-color: var(--sepia); background: rgba(184,149,106,0.07); }
+/* ── App ── */
+#app { display: none; max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
 
-.upload-zone input {
-  position: absolute; inset: 0;
-  opacity: 0; cursor: pointer;
-  width: 100%; height: 100%;
-}
-
-.upload-icon { font-size: 2.2rem; display: block; margin-bottom: 0.6rem; }
-
-.upload-zone strong {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
-  font-weight: 400;
-  margin-bottom: 0.3rem;
-}
-
-.upload-zone p { font-size: 0.75rem; color: var(--muted); }
-
-#previewWrap { display: none; margin-bottom: 1.5rem; }
-
-#previewWrap img {
-  width: 100%;
-  max-height: 320px;
-  object-fit: contain;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--sepia-lt);
-}
-
-/* ── Preset Panel ──────────────────────────── */
-.preset-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-}
-
-.preset-top {
+/* ── API Key Badge ── */
+.apikey-badge {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0.8rem 1.25rem;
-  background: var(--ink);
-  color: var(--sepia-lt);
-  cursor: pointer;
-  user-select: none;
+  background: var(--white); border: 1px solid var(--border); border-radius: 4px;
+  padding: 0.85rem 1.25rem; margin-bottom: 1.5rem;
 }
+.apikey-badge-left { display: flex; align-items: center; gap: 0.75rem; }
+.apikey-badge-left span { font-size: 0.75rem; color: var(--muted); }
+.apikey-badge-left strong { font-size: 0.78rem; color: var(--success); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
 
+/* ── Section Label ── */
+.section-label { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--sepia-dk); margin-bottom: 0.75rem; }
+
+/* ── Upload ── */
+.upload-zone {
+  position: relative; border: 2px dashed var(--border); border-radius: 4px;
+  padding: 3.5rem 2rem; text-align: center; cursor: pointer; transition: all 0.25s;
+  background: rgba(240,230,210,0.15); margin-bottom: 1.5rem;
+}
+.upload-zone:hover, .upload-zone.over { border-color: var(--sepia); background: rgba(184,149,106,0.07); }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.upload-icon { font-size: 2.2rem; display: block; margin-bottom: 0.6rem; }
+.upload-zone strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 0.3rem; }
+.upload-zone p { font-size: 0.75rem; color: var(--muted); }
+#previewWrap { display: none; margin-bottom: 1.5rem; }
+#previewWrap img { width: 100%; max-height: 320px; object-fit: contain; border: 1px solid var(--border); border-radius: 3px; background: var(--sepia-lt); }
+
+/* ── Preset ── */
+.preset-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+.preset-top { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.25rem; background: var(--ink); color: var(--sepia-lt); cursor: pointer; user-select: none; }
 .preset-top span:first-child { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; }
-.preset-top span:last-child { font-size: 0.75rem; opacity: 0.5; transition: transform 0.3s; }
-.preset-top.open span:last-child { transform: rotate(180deg); }
-
-.preset-body {
-  display: none;
-  padding: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.25rem;
-}
-
+.preset-top .arr { font-size: 0.75rem; opacity: 0.5; transition: transform 0.3s; }
+.preset-top.open .arr { transform: rotate(180deg); }
+.preset-body { display: none; padding: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; }
 .preset-body.open { display: grid; }
-
-.pg h4 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.9rem;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.25rem;
-  border-bottom: 1px solid var(--sepia-lt);
-}
-
-.pr {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0.25rem 0; font-size: 0.72rem;
-}
-
+.pg h4 { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--accent); margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--sepia-lt); }
+.pr { display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0; font-size: 0.72rem; }
 .pr span:first-child { color: var(--muted); }
-
-.pv {
-  background: var(--sepia-lt); padding: 0.1rem 0.45rem;
-  border-radius: 2px; font-size: 0.68rem; font-weight: 500;
-}
-
-.pv.p { color: var(--success); }
-.pv.n { color: var(--accent); }
-
-/* ── Toggle ────────────────────────────────── */
-.toggle-row {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 1rem 1.25rem;
-  border-top: 1px solid var(--sepia-lt);
-}
-
+.pv { background: var(--sepia-lt); padding: 0.1rem 0.45rem; border-radius: 2px; font-size: 0.68rem; }
+.pv.p { color: var(--success); } .pv.n { color: var(--accent); }
+.toggle-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; border-top: 1px solid var(--sepia-lt); }
 .tog { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
 .tog input { opacity: 0; width: 0; height: 0; }
-.sl {
-  position: absolute; inset: 0;
-  background: var(--border); border-radius: 22px;
-  cursor: pointer; transition: 0.25s;
-}
-.sl::before {
-  content: ''; position: absolute;
-  width: 16px; height: 16px; left: 3px; top: 3px;
-  background: white; border-radius: 50%; transition: 0.25s;
-}
+.sl { position: absolute; inset: 0; background: var(--border); border-radius: 22px; cursor: pointer; transition: 0.25s; }
+.sl::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.25s; }
 .tog input:checked + .sl { background: var(--accent); }
 .tog input:checked + .sl::before { transform: translateX(18px); }
-
 .tl strong { display: block; font-size: 0.8rem; }
 .tl small { color: var(--muted); font-size: 0.7rem; }
 
-/* ── CTA Button ────────────────────────────── */
-.btn-run {
-  width: 100%; padding: 1.1rem;
-  background: var(--ink); color: var(--sepia-lt);
-  border: none; border-radius: 3px;
-  font-family: 'Inconsolata', monospace;
-  font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.25s;
-  margin-bottom: 1.5rem;
-}
-
+/* ── CTA ── */
+.btn-run { width: 100%; padding: 1.1rem; background: var(--ink); color: var(--sepia-lt); border: none; border-radius: 3px; font-family: 'Inconsolata', monospace; font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; margin-bottom: 1.5rem; }
 .btn-run:hover:not(:disabled) { background: var(--sepia-dk); }
 .btn-run:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* ── Progress ──────────────────────────────── */
-#progressBox {
-  display: none;
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: 4px; padding: 2rem; text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.prog-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem; margin-bottom: 1rem;
-}
-
-.prog-track {
-  height: 2px; background: var(--border);
-  border-radius: 2px; overflow: hidden; margin-bottom: 0.75rem;
-}
-
-.prog-fill {
-  height: 100%; background: var(--accent);
-  border-radius: 2px; width: 0%;
-  transition: width 0.5s ease;
-}
-
+/* ── Progress ── */
+#progressBox { display: none; background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; text-align: center; margin-bottom: 1.5rem; }
+.prog-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: 1rem; }
+.prog-track { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 0.75rem; }
+.prog-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.5s ease; }
 .prog-msg { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
 
-/* ── Error ─────────────────────────────────── */
-#errorBox {
-  display: none;
-  background: #fff5f3; border: 1px solid #f0c0b0;
-  border-radius: 4px; padding: 1rem 1.25rem;
-  font-size: 0.78rem; color: var(--accent);
-  margin-bottom: 1.5rem;
-}
+/* ── Error ── */
+#errorBox { display: none; background: #fff5f3; border: 1px solid #f0c0b0; border-radius: 4px; padding: 1rem 1.25rem; font-size: 0.78rem; color: var(--accent); margin-bottom: 1.5rem; }
 
-/* ── Results ───────────────────────────────── */
+/* ── Results ── */
 #results { display: none; }
-
-.results-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.9rem; font-weight: 300;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.75rem; margin-bottom: 1.75rem;
-}
-
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-}
-
-.photo-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 4px; overflow: hidden;
-  transition: box-shadow 0.25s;
-}
-
+.results-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1.75rem; }
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+.photo-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; transition: box-shadow 0.25s; }
 .photo-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.08); }
-
-.pc-head {
-  padding: 0.6rem 1rem;
-  background: var(--sepia-lt);
-  border-bottom: 1px solid var(--border);
-  font-size: 0.62rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--sepia-dk);
-}
-
-.photo-card img {
-  width: 100%; display: block;
-  aspect-ratio: 3/4; object-fit: contain;
-  background: var(--sepia-lt);
-}
-
-.pc-foot {
-  padding: 0.75rem 1rem;
-  display: flex; justify-content: space-between; align-items: center;
-}
-
+.pc-head { padding: 0.6rem 1rem; background: var(--sepia-lt); border-bottom: 1px solid var(--border); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sepia-dk); }
+.photo-card img { width: 100%; display: block; aspect-ratio: 3/4; object-fit: contain; background: var(--sepia-lt); }
+.pc-foot { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; }
 .pc-foot span { font-size: 0.65rem; color: var(--muted); }
-
-.btn-dl {
-  font-family: 'Inconsolata', monospace;
-  font-size: 0.68rem; letter-spacing: 0.1em;
-  padding: 0.38rem 0.8rem;
-  background: transparent;
-  border: 1px solid var(--sepia);
-  color: var(--sepia-dk); border-radius: 2px;
-  cursor: pointer; text-decoration: none;
-  transition: all 0.2s; display: inline-block;
-}
+.btn-dl { font-family: 'Inconsolata', monospace; font-size: 0.68rem; letter-spacing: 0.1em; padding: 0.38rem 0.8rem; background: transparent; border: 1px solid var(--sepia); color: var(--sepia-dk); border-radius: 2px; cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block; }
 .btn-dl:hover { background: var(--sepia); color: white; }
 
-/* ── Footer ────────────────────────────────── */
-footer {
-  position: relative; z-index: 1;
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.62rem; letter-spacing: 0.15em;
-  color: var(--muted);
-  border-top: 1px solid var(--border);
-}
+footer { position: relative; z-index: 1; text-align: center; padding: 2rem; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted); border-top: 1px solid var(--border); }
 
-/* ── Responsive ────────────────────────────── */
 @media (max-width: 600px) {
   header { padding: 1rem 1.25rem; }
   .hero { padding: 3rem 1.25rem 2.5rem; }
   #app { padding: 1.5rem 1rem 3rem; }
+  .input-row { flex-direction: column; }
 }
 
-/* ── Fade-in animation ─────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 .fade-up { animation: fadeUp 0.5s ease forwards; }
 </style>
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────── -->
 <header>
   <div class="logo">Atelier <span>Vintage</span></div>
-  <div id="userArea">
-    <!-- preenchido por JS -->
-  </div>
+  <div id="userArea"></div>
 </header>
 
-<!-- ── Hero ────────────────────────────────────────────── -->
 <section class="hero">
   <p class="hero-eyebrow">✦ Restauração &amp; Colorização com IA ✦</p>
   <h1>Fotos Antigas,<br/><em>Vida Nova</em></h1>
   <p>Restaure a nitidez, elimine o desgaste do tempo e devolva as cores a fotografias históricas — com precisão de estúdio profissional.</p>
 </section>
 
-<!-- ── Login Gate ───────────────────────────────────────── -->
+<!-- Gate 1: Login Google -->
 <div id="loginGate">
   <div class="gate-box">
     <div class="gate-icon">🕰️</div>
     <h2>Entre para começar</h2>
     <p>Faça login com sua conta Google para acessar o laboratório de restauração. Suas imagens são processadas com segurança e nunca armazenadas.</p>
     <a href="/auth/google" class="btn-google-lg">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
       Entrar com Google
     </a>
   </div>
 </div>
 
-<!-- ── App (autenticado) ────────────────────────────────── -->
-<div id="app">
-
-  <!-- Upload -->
-  <div class="section-label">01 · Selecione a Foto</div>
-  <div class="upload-zone" id="dropZone">
-    <input type="file" id="fileInput" accept="image/*"/>
-    <span class="upload-icon">🖼️</span>
-    <strong>Clique ou arraste sua foto aqui</strong>
-    <p>JPG · PNG · WEBP · até 20 MB</p>
-  </div>
-  <div id="previewWrap">
-    <img id="previewImg" src="" alt="Preview da foto"/>
-  </div>
-
-  <!-- Preset -->
-  <div class="section-label">02 · Preset de Restauração</div>
-  <div class="preset-card">
-    <div class="preset-top" id="presetToggle">
-      <span>⚙ Parâmetros Ativos · Estilo Lightroom</span>
-      <span>▼</span>
+<!-- Gate 2: API Key do Gemini -->
+<div id="apiKeyGate">
+  <div class="apikey-box">
+    <div class="gate-icon">🔑</div>
+    <h2>Configure sua API Key</h2>
+    <p>Este app usa sua própria cota do Google Gemini — assim cada usuário responde pelo próprio uso e não há custo centralizado.</p>
+    <div class="apikey-steps">
+      <strong>Como obter sua API Key gratuita:</strong><br/>
+      1. Acesse <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a><br/>
+      2. Clique em <strong>Create API key</strong><br/>
+      3. Copie a chave gerada (começa com <code>AIza...</code>)<br/>
+      4. Cole abaixo e clique em Salvar
     </div>
-    <div class="preset-body" id="presetBody">
-      <div class="pg">
-        <h4>Preto &amp; Branco · B&W Mix</h4>
-        <div class="pr"><span>Amarelos</span><span class="pv n">−15</span></div>
-        <div class="pr"><span>Laranjas / Vermelhos</span><span class="pv p">+10</span></div>
-      </div>
-      <div class="pg">
-        <h4>Luz &amp; Contraste</h4>
-        <div class="pr"><span>Exposição</span><span class="pv p">+0.15</span></div>
-        <div class="pr"><span>Contraste</span><span class="pv p">+15</span></div>
-        <div class="pr"><span>Realces</span><span class="pv n">−10</span></div>
-        <div class="pr"><span>Sombras</span><span class="pv p">+5</span></div>
-        <div class="pr"><span>Pretos</span><span class="pv n">−12</span></div>
-        <div class="pr"><span>Brancos</span><span class="pv p">+8</span></div>
-      </div>
-      <div class="pg">
-        <h4>Detalhes &amp; Preservação</h4>
-        <div class="pr"><span>Clareza</span><span class="pv p">+10</span></div>
-        <div class="pr"><span>Desembaçar</span><span class="pv p">+5</span></div>
-        <div class="pr"><span>Ruído · Lum.</span><span class="pv">15</span></div>
-        <div class="pr"><span>Detalhe</span><span class="pv">50</span></div>
-      </div>
-      <div class="pg">
-        <h4>Correção Geométrica</h4>
-        <div class="pr"><span>Rotação</span><span class="pv p">+0.5°</span></div>
-        <div class="pr"><span>Modo</span><span class="pv">P&B Puro</span></div>
-      </div>
+    <div class="input-row">
+      <input type="password" id="apikeyInput" placeholder="AIzaSy-sua-chave-aqui" autocomplete="off"/>
+      <button class="btn-save" onclick="saveApiKey()">Salvar</button>
     </div>
-    <div class="toggle-row">
-      <label class="tog">
-        <input type="checkbox" id="colorizeToggle" checked/>
-        <span class="sl"></span>
-      </label>
-      <div class="tl">
-        <strong>Gerar versão colorizada</strong>
-        <small>Após restauração em P&B, gerar versão com cores realistas dos anos 1960</small>
-      </div>
-    </div>
+    <div id="apikeyError"></div>
+    <p class="apikey-note">
+      🔒 Sua chave fica salva apenas na sua sessão — nunca é armazenada em banco de dados nem compartilhada.<br/>
+      A key gratuita do AI Studio tem cota generosa para uso pessoal.
+      <a href="https://ai.google.dev/gemini-api/docs/rate-limits" target="_blank">Ver limites</a>
+    </p>
   </div>
-
-  <!-- CTA -->
-  <button class="btn-run" id="btnRun" onclick="runProcess()">
-    ✦ Restaurar &amp; Processar Foto
-  </button>
-
-  <!-- Error -->
-  <div id="errorBox"></div>
-
-  <!-- Progress -->
-  <div id="progressBox">
-    <div class="prog-title">Processando com Gemini AI…</div>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-    <div class="prog-msg" id="progMsg">Iniciando…</div>
-  </div>
-
-  <!-- Results -->
-  <div id="results">
-    <div class="results-title">✦ Resultado</div>
-    <div class="photo-grid" id="photoGrid"></div>
-  </div>
-
 </div>
 
-<footer>
-  ATELIER VINTAGE · RESTAURAÇÃO DE FOTOS ANTIGAS · POWERED BY GEMINI AI
-</footer>
+<!-- App principal -->
+<div id="app">
+
+  <!-- Badge da API Key -->
+  <div style="max-width:980px; margin: 1.5rem auto 0; padding: 0 1.5rem;">
+    <div class="apikey-badge">
+      <div class="apikey-badge-left">
+        <div class="dot"></div>
+        <div>
+          <strong>API Key configurada</strong>
+          <span>· sua cota pessoal do Gemini está ativa</span>
+        </div>
+      </div>
+      <button class="btn-text" onclick="removeApiKey()">Trocar chave</button>
+    </div>
+  </div>
+
+  <div style="max-width:980px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem;">
+
+    <!-- Upload -->
+    <div class="section-label">01 · Selecione a Foto</div>
+    <div class="upload-zone" id="dropZone">
+      <input type="file" id="fileInput" accept="image/*"/>
+      <span class="upload-icon">🖼️</span>
+      <strong>Clique ou arraste sua foto aqui</strong>
+      <p>JPG · PNG · WEBP · até 20 MB</p>
+    </div>
+    <div id="previewWrap"><img id="previewImg" src="" alt="Preview"/></div>
+
+    <!-- Preset -->
+    <div class="section-label">02 · Preset de Restauração</div>
+    <div class="preset-card">
+      <div class="preset-top" id="presetToggle">
+        <span>⚙ Parâmetros Ativos · Estilo Lightroom</span>
+        <span class="arr">▼</span>
+      </div>
+      <div class="preset-body" id="presetBody">
+        <div class="pg">
+          <h4>Preto &amp; Branco · B&W Mix</h4>
+          <div class="pr"><span>Amarelos</span><span class="pv n">−15</span></div>
+          <div class="pr"><span>Laranjas / Vermelhos</span><span class="pv p">+10</span></div>
+        </div>
+        <div class="pg">
+          <h4>Luz &amp; Contraste</h4>
+          <div class="pr"><span>Exposição</span><span class="pv p">+0.15</span></div>
+          <div class="pr"><span>Contraste</span><span class="pv p">+15</span></div>
+          <div class="pr"><span>Realces</span><span class="pv n">−10</span></div>
+          <div class="pr"><span>Sombras</span><span class="pv p">+5</span></div>
+          <div class="pr"><span>Pretos</span><span class="pv n">−12</span></div>
+          <div class="pr"><span>Brancos</span><span class="pv p">+8</span></div>
+        </div>
+        <div class="pg">
+          <h4>Detalhes &amp; Preservação</h4>
+          <div class="pr"><span>Clareza</span><span class="pv p">+10</span></div>
+          <div class="pr"><span>Desembaçar</span><span class="pv p">+5</span></div>
+          <div class="pr"><span>Ruído · Lum.</span><span class="pv">15</span></div>
+          <div class="pr"><span>Detalhe</span><span class="pv">50</span></div>
+        </div>
+        <div class="pg">
+          <h4>Correção Geométrica</h4>
+          <div class="pr"><span>Rotação</span><span class="pv p">+0.5°</span></div>
+          <div class="pr"><span>Modo</span><span class="pv">P&B Puro</span></div>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <label class="tog">
+          <input type="checkbox" id="colorizeToggle" checked/>
+          <span class="sl"></span>
+        </label>
+        <div class="tl">
+          <strong>Gerar versão colorizada</strong>
+          <small>Após restauração em P&B, gerar versão com cores realistas dos anos 1960</small>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-run" id="btnRun" onclick="runProcess()">✦ Restaurar &amp; Processar Foto</button>
+
+    <div id="errorBox"></div>
+
+    <div id="progressBox">
+      <div class="prog-title">Processando com Gemini AI…</div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-msg" id="progMsg">Iniciando…</div>
+    </div>
+
+    <div id="results">
+      <div class="results-title">✦ Resultado</div>
+      <div class="photo-grid" id="photoGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>ATELIER VINTAGE · RESTAURAÇÃO DE FOTOS ANTIGAS · POWERED BY GEMINI AI</footer>
 
 <script>
-// ── State ──────────────────────────────────────────────────────────
+// ── Estado ────────────────────────────────────────────────
 let currentUser  = null;
 let uploadedFile = null;
 
-// ── Init ───────────────────────────────────────────────────────────
+// ── Init ──────────────────────────────────────────────────
 (async () => {
   try {
     const r = await fetch('/api/me', { credentials: 'include' });
     const d = await r.json();
-    if (d.authenticated) {
-      currentUser = d.user;
-      showApp();
+    if (!d.authenticated) {
+      showScreen('login');
     } else {
-      showGate();
+      currentUser = d.user;
+      renderUserArea(currentUser);
+      if (!d.hasApiKey) {
+        showScreen('apikey');
+      } else {
+        showScreen('app');
+      }
     }
-  } catch { showGate(); }
+  } catch { showScreen('login'); }
 })();
 
-function showGate() {
-  document.getElementById('loginGate').style.display = 'block';
-  document.getElementById('app').style.display = 'none';
-  renderUserArea(null);
-}
-
-function showApp() {
-  document.getElementById('loginGate').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  renderUserArea(currentUser);
+function showScreen(screen) {
+  document.getElementById('loginGate').style.display  = screen === 'login'  ? 'block' : 'none';
+  document.getElementById('apiKeyGate').style.display = screen === 'apikey' ? 'block' : 'none';
+  document.getElementById('app').style.display        = screen === 'app'    ? 'block' : 'none';
 }
 
 function renderUserArea(user) {
   const area = document.getElementById('userArea');
   if (!user) {
-    area.innerHTML = `
-      <a href="/auth/google" class="btn-google">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Entrar com Google
-      </a>`;
+    area.innerHTML = `<a href="/auth/google" class="btn-google">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Entrar com Google</a>`;
   } else {
     area.innerHTML = `
       <div class="user-chip">
         ${user.avatar ? `<img src="${user.avatar}" alt="${user.name}"/>` : ''}
         <span>${user.name}</span>
       </div>
-      <button class="btn-logout" onclick="location.href='/auth/logout'">Sair</button>`;
+      <span class="sep">·</span>
+      <button class="btn-text" onclick="location.href='/auth/logout'">Sair</button>`;
   }
 }
 
-// ── Upload ─────────────────────────────────────────────────────────
+// ── API Key ───────────────────────────────────────────────
+async function saveApiKey() {
+  const key = document.getElementById('apikeyInput').value.trim();
+  const err = document.getElementById('apikeyError');
+  err.style.display = 'none';
+
+  if (!key) { err.textContent = 'Cole sua API Key antes de salvar.'; err.style.display = 'block'; return; }
+  if (!key.startsWith('AIza')) { err.textContent = 'API Key inválida. Deve começar com "AIza".'; err.style.display = 'block'; return; }
+
+  try {
+    const r = await fetch('/api/apikey', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey: key })
+    });
+    const d = await r.json();
+    if (!r.ok) { err.textContent = d.error || 'Erro ao salvar.'; err.style.display = 'block'; return; }
+    showScreen('app');
+  } catch (e) {
+    err.textContent = 'Erro de conexão.'; err.style.display = 'block';
+  }
+}
+
+async function removeApiKey() {
+  await fetch('/api/apikey', { method: 'DELETE', credentials: 'include' });
+  document.getElementById('apikeyInput').value = '';
+  showScreen('apikey');
+}
+
+// Salvar com Enter
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('apikeyInput');
+  if (input) input.addEventListener('keydown', e => e.key === 'Enter' && saveApiKey());
+});
+
+// ── Upload ────────────────────────────────────────────────
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
-
-fileInput.addEventListener('change', e => e.target.files[0] && loadFile(e.target.files[0]));
-
-dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('over'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
-dropZone.addEventListener('drop', e => {
-  e.preventDefault(); dropZone.classList.remove('over');
-  const f = e.dataTransfer.files[0];
-  if (f) loadFile(f);
-});
+if (fileInput) fileInput.addEventListener('change', e => e.target.files[0] && loadFile(e.target.files[0]));
+if (dropZone) {
+  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
+  dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('over'); const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+}
 
 function loadFile(file) {
   uploadedFile = file;
   const r = new FileReader();
-  r.onload = ev => {
-    const pw = document.getElementById('previewWrap');
-    document.getElementById('previewImg').src = ev.target.result;
-    pw.style.display = 'block';
-  };
+  r.onload = ev => { document.getElementById('previewImg').src = ev.target.result; document.getElementById('previewWrap').style.display = 'block'; };
   r.readAsDataURL(file);
   hideError();
 }
 
-// ── Preset toggle ──────────────────────────────────────────────────
-document.getElementById('presetToggle').addEventListener('click', () => {
-  const body = document.getElementById('presetBody');
-  const tog  = document.getElementById('presetToggle');
-  body.classList.toggle('open');
-  tog.classList.toggle('open');
+// ── Preset toggle ─────────────────────────────────────────
+const presetToggle = document.getElementById('presetToggle');
+if (presetToggle) presetToggle.addEventListener('click', () => {
+  document.getElementById('presetBody').classList.toggle('open');
+  presetToggle.classList.toggle('open');
 });
 
-// ── Helpers ────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────
 function setProgress(pct, msg) {
   document.getElementById('progFill').style.width = pct + '%';
   document.getElementById('progMsg').textContent  = msg;
 }
-
-function showError(msg) {
-  const b = document.getElementById('errorBox');
-  b.textContent = '⚠ ' + msg;
-  b.style.display = 'block';
-}
-function hideError() { document.getElementById('errorBox').style.display = 'none'; }
+function showError(msg) { const b = document.getElementById('errorBox'); b.textContent = '⚠ ' + msg; b.style.display = 'block'; }
+function hideError()    { document.getElementById('errorBox').style.display = 'none'; }
 
 function addCard(title, b64, mime, filename) {
   const src  = `data:${mime};base64,${b64}`;
@@ -688,66 +482,45 @@ function addCard(title, b64, mime, filename) {
   card.innerHTML = `
     <div class="pc-head">${title}</div>
     <img src="${src}" alt="${title}"/>
-    <div class="pc-foot">
-      <span>${filename}</span>
-      <a class="btn-dl" href="${src}" download="${filename}">⬇ Baixar</a>
-    </div>`;
+    <div class="pc-foot"><span>${filename}</span><a class="btn-dl" href="${src}" download="${filename}">⬇ Baixar</a></div>`;
   document.getElementById('photoGrid').appendChild(card);
 }
 
-// ── Main Process ───────────────────────────────────────────────────
+// ── Processo principal ────────────────────────────────────
 async function runProcess() {
   hideError();
   document.getElementById('results').style.display = 'none';
   document.getElementById('photoGrid').innerHTML   = '';
-
   if (!uploadedFile) { showError('Selecione uma foto primeiro.'); return; }
 
   const doColorize = document.getElementById('colorizeToggle').checked;
-  const btn        = document.getElementById('btnRun');
-  btn.disabled     = true;
-
+  const btn = document.getElementById('btnRun');
+  btn.disabled = true;
   document.getElementById('progressBox').style.display = 'block';
   setProgress(5, 'Preparando envio…');
 
   try {
-    // ── STEP 1: Restauração ────────────────────────────────────────
+    // Restauração
     setProgress(15, 'Enviando foto para restauração…');
-
     const form = new FormData();
     form.append('foto', uploadedFile);
-
-    const r1 = await fetch('/api/restaurar', {
-      method: 'POST', body: form, credentials: 'include'
-    });
-
-    if (!r1.ok) {
-      const e = await r1.json().catch(() => ({}));
-      throw new Error(e.error || `Erro HTTP ${r1.status}`);
-    }
-
+    const r1 = await fetch('/api/restaurar', { method: 'POST', body: form, credentials: 'include' });
+    if (!r1.ok) { const e = await r1.json().catch(() => ({})); throw new Error(e.error || `Erro HTTP ${r1.status}`); }
     const d1 = await r1.json();
     setProgress(55, 'Restauração P&B concluída…');
 
     document.getElementById('results').style.display = 'block';
     addCard('✨ Restaurada · Preto &amp; Branco Puro', d1.image, d1.mime, 'restaurada_pb.png');
 
-    // ── STEP 2: Colorização ────────────────────────────────────────
+    // Colorização
     if (doColorize) {
       setProgress(65, 'Iniciando colorização realista…');
-
       const r2 = await fetch('/api/colorizar', {
-        method:  'POST',
-        credentials: 'include',
+        method: 'POST', credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ image: d1.image, mime: d1.mime })
+        body: JSON.stringify({ image: d1.image, mime: d1.mime })
       });
-
-      if (!r2.ok) {
-        const e = await r2.json().catch(() => ({}));
-        throw new Error(e.error || `Erro HTTP ${r2.status}`);
-      }
-
+      if (!r2.ok) { const e = await r2.json().catch(() => ({})); throw new Error(e.error || `Erro HTTP ${r2.status}`); }
       const d2 = await r2.json();
       setProgress(95, 'Colorização concluída…');
       addCard('🎨 Colorizada · Anos 1960', d2.image, d2.mime, 'colorizada.png');
@@ -759,7 +532,12 @@ async function runProcess() {
 
   } catch (err) {
     document.getElementById('progressBox').style.display = 'none';
-    showError(err.message);
+    // Se a API Key expirou ou é inválida, volta para a tela de configuração
+    if (err.message.includes('API Key') || err.message.includes('quota') || err.message.includes('403')) {
+      showError(err.message + ' — verifique sua API Key.');
+    } else {
+      showError(err.message);
+    }
     console.error(err);
   } finally {
     btn.disabled = false;

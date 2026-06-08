@@ -8,10 +8,10 @@ const fetch      = require('node-fetch');
 const path       = require('path');
 const cors       = require('cors');
 
-const app  = express();
+const app    = express();
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 20 * 1024 * 1024 } // 20 MB
+  limits: { fileSize: 20 * 1024 * 1024 }
 });
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
@@ -26,7 +26,7 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24h
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
@@ -39,7 +39,6 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL:  `${process.env.BASE_URL}/auth/google/callback`
 }, (accessToken, refreshToken, profile, done) => {
-  // Salva só o necessário na sessão
   return done(null, {
     id:     profile.id,
     name:   profile.displayName,
@@ -67,22 +66,71 @@ app.get('/auth/logout', (req, res) => {
 
 app.get('/api/me', (req, res) => {
   if (!req.isAuthenticated()) return res.json({ authenticated: false });
-  res.json({ authenticated: true, user: req.user });
+  // Informa se o usuário já tem API Key salva na sessão
+  res.json({
+    authenticated: true,
+    user: req.user,
+    hasApiKey: !!req.session.geminiApiKey
+  });
 });
 
-// ─── Auth Guard ────────────────────────────────────────────────────────────────
+// ─── Salvar API Key na sessão ──────────────────────────────────────────────────
+app.post('/api/apikey', (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ error: 'Não autenticado.' });
+  const { apiKey } = req.body;
+  if (!apiKey || !apiKey.startsWith('AIza')) {
+    return res.status(400).json({ error: 'API Key inválida. Deve começar com "AIza".' });
+  }
+  req.session.geminiApiKey = apiKey;
+  res.json({ ok: true });
+});
+
+// ─── Remover API Key da sessão ─────────────────────────────────────────────────
+app.delete('/api/apikey', (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ error: 'Não autenticado.' });
+  delete req.session.geminiApiKey;
+  res.json({ ok: true });
+});
+
+// ─── Auth + API Key Guard ──────────────────────────────────────────────────────
 function requireAuth(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.status(401).json({ error: 'Não autenticado. Faça login com Google.' });
+  if (!req.isAuthenticated())
+    return res.status(401).json({ error: 'Não autenticado. Faça login com Google.' });
+  if (!req.session.geminiApiKey)
+    return res.status(403).json({ error: 'API Key do Gemini não configurada.' });
+  next();
 }
 
-// ─── Gemini Proxy: Restauração ─────────────────────────────────────────────────
+// ─── Chamada Gemini centralizada ───────────────────────────────────────────────
+async function callGemini(apiKey, parts) {
+  const model = 'gemini-2.5-flash-image';
+  const url   = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  const resp  = await fetch(url, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts }],
+      generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+    })
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error?.message || `Erro HTTP ${resp.status}`);
+  }
+  const data    = await resp.json();
+  const imgPart = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
+  if (!imgPart) throw new Error('Gemini não retornou imagem.');
+  return { image: imgPart.inlineData.data, mime: imgPart.inlineData.mimeType };
+}
+
+// ─── Restauração ───────────────────────────────────────────────────────────────
 app.post('/api/restaurar', requireAuth, upload.single('foto'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'Nenhuma foto enviada.' });
 
     const base64 = req.file.buffer.toString('base64');
     const mime   = req.file.mimetype;
+    const apiKey = req.session.geminiApiKey;
 
     const prompt = `Você é um especialista em restauração de fotografias históricas.
 Receba esta foto antiga e aplique os seguintes ajustes de restauração profissional:
@@ -113,50 +161,26 @@ REMOÇÃO DE DEFEITOS:
 
 Gere a imagem restaurada com máxima qualidade, preservando caráter histórico e detalhes dos rostos.`;
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            role: 'user',
-            parts: [
-              { inline_data: { mime_type: mime, data: base64 } },
-              { text: prompt }
-            ]
-          }],
-          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
-        })
-      }
-    );
+    const result = await callGemini(apiKey, [
+      { inline_data: { mime_type: mime, data: base64 } },
+      { text: prompt }
+    ]);
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      return res.status(502).json({ error: err.error?.message || 'Erro na API Gemini' });
-    }
-
-    const data = await response.json();
-    const imgPart = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
-
-    if (!imgPart) return res.status(502).json({ error: 'Gemini não retornou imagem.' });
-
-    res.json({
-      image: imgPart.inlineData.data,
-      mime:  imgPart.inlineData.mimeType
-    });
+    res.json(result);
 
   } catch (err) {
-    console.error('[restaurar]', err);
-    res.status(500).json({ error: err.message });
+    console.error('[restaurar]', err.message);
+    res.status(502).json({ error: err.message });
   }
 });
 
-// ─── Gemini Proxy: Colorização ─────────────────────────────────────────────────
-app.post('/api/colorizar', requireAuth, express.json({ limit: '25mb' }), async (req, res) => {
+// ─── Colorização ───────────────────────────────────────────────────────────────
+app.post('/api/colorizar', requireAuth, async (req, res) => {
   try {
     const { image, mime } = req.body;
     if (!image) return res.status(400).json({ error: 'Imagem não enviada.' });
+
+    const apiKey = req.session.geminiApiKey;
 
     const prompt = `Você é um especialista em colorização de fotografias históricas em preto e branco.
 Analise esta fotografia restaurada e aplique colorização realista e natural seguindo estas diretrizes:
@@ -190,42 +214,16 @@ QUALIDADE:
 
 Gere a imagem colorizada com qualidade máxima, fiel ao período histórico dos anos 1960.`;
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            role: 'user',
-            parts: [
-              { inline_data: { mime_type: mime || 'image/png', data: image } },
-              { text: prompt }
-            ]
-          }],
-          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
-        })
-      }
-    );
+    const result = await callGemini(apiKey, [
+      { inline_data: { mime_type: mime || 'image/png', data: image } },
+      { text: prompt }
+    ]);
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      return res.status(502).json({ error: err.error?.message || 'Erro na API Gemini' });
-    }
-
-    const data = await response.json();
-    const imgPart = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
-
-    if (!imgPart) return res.status(502).json({ error: 'Gemini não retornou imagem colorizada.' });
-
-    res.json({
-      image: imgPart.inlineData.data,
-      mime:  imgPart.inlineData.mimeType
-    });
+    res.json(result);
 
   } catch (err) {
-    console.error('[colorizar]', err);
-    res.status(500).json({ error: err.message });
+    console.error('[colorizar]', err.message);
+    res.status(502).json({ error: err.message });
   }
 });
 
